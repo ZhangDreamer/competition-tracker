@@ -17,6 +17,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+const progressData = {
+  relags: 0,
+  dreamer: 0
+};
+
+function fetchGoals() {
+  const goalsRef = ref(database, '/goals');
+  onValue(goalsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+          document.getElementById('relags-goal').textContent = data.relags;
+          document.getElementById('dreamer-goal').textContent = data.dreamer;
+      }
+  });
+}
+
+
 // Update progress data from Firebase
 function updateProgress() {
   const progressRef = ref(database, '/progress');
@@ -60,6 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
     logButton.addEventListener('click', logProgress);
   }
 });
+
+// Example function to update goals
+function updateGoals() {
+  const relagsGoal = document.getElementById('relags-goal');
+  const dreamerGoal = document.getElementById('dreamer-goal');
+
+  // Set goal titles
+  relagsGoal.textContent = "Build a Web App";  // Example goal for Relags
+  dreamerGoal.textContent = "Complete Portfolio";  // Example goal for Dreamer
+}
+
+// Call this function on page load or after fetching data
+updateGoals();
 
 
 // Add history log to Firebase
@@ -136,6 +166,28 @@ function updateLeaderboard() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+  // Event listener for setting the goal for Relags
+  document.getElementById('set-relags-goal').addEventListener('click', function() {
+    const goal = document.getElementById('relags-goal-input').value;
+    setGoal('relags', goal);
+  });
+
+  // Event listener for setting the goal for Dreamer
+  document.getElementById('set-dreamer-goal').addEventListener('click', function() {
+    const goal = document.getElementById('dreamer-goal-input').value;
+    setGoal('dreamer', goal);
+  });
+});
+
+function setGoal(participant, goal) {
+  const goalRef = ref(database, `/goals/${participant}`);
+  set(goalRef, goal).then(() => {
+      document.getElementById(`${participant}-goal`).textContent = goal;
+  }).catch((error) => {
+      console.error('Error updating goal:', error);
+  });
+}
 
 
 
@@ -145,6 +197,7 @@ function initialize() {
   fetchHistory();
   displayMilestones();
   updateLeaderboard();
+  fetchGoals();
 }
 
 initialize();

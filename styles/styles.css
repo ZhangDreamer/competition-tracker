@@ -39,12 +39,39 @@ h2 {
   overflow: hidden;
 }
 
+.progress-container {
+  display: flex;
+  align-items: center;
+  position: relative; /* Ensures relative positioning context */
+}
+
+.progress-bar {
+  flex-grow: 1;  /* Allows the progress bar to take up most of the space */
+  background-color: #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 10px; /* Space between the progress bar and the label */
+}
+
 .progress {
   height: 20px;
   background-color: #4caf50;
-  width: 0;
+  width: 0; /* This will be dynamically updated */
   transition: width 0.5s;
 }
+
+.goal-label {
+  padding: 4px 10px;
+  background-color: #f2f2f2; /* Light grey background for the label */
+  border-radius: 8px; /* Rounded corners for the label */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  white-space: nowrap; /* Prevents the label from wrapping */
+  font-size: 0.9rem; /* Smaller font size for the label */
+  color: #333; /* Dark grey color for the text */
+  align-self: flex-start; /* Aligns the label to the top of the container */
+}
+
+
 
 #relags .progress {
   background-color: #f44336; /* Red */

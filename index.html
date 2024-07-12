@@ -21,6 +21,7 @@
                 <h3>Relags</h3>
                 <div class="progress-bar">
                     <div class="progress" id="relags-progress"></div>
+                    <div class="goal-label" id="relags-goal">End Project Title</div>
                 </div>
                 <p id="relags-percentage">0%</p>
             </div>
@@ -28,9 +29,18 @@
                 <h3>Dreamer</h3>
                 <div class="progress-bar">
                     <div class="progress" id="dreamer-progress"></div>
+                    <div class="goal-label" id="dreamer-goal">End Project Title</div>
                 </div>
                 <p id="dreamer-percentage">0%</p>
             </div>
+            <div>
+              <input type="text" id="relags-goal-input" placeholder="Enter goal for Relags">
+              <button id="set-relags-goal">Set Goal</button>
+            </div>
+            <div>
+              <input type="text" id="dreamer-goal-input" placeholder="Enter goal for Dreamer">
+              <button id="set-dreamer-goal">Set Goal</button>
+            </div>               
         </section>
         <section id="milestones">
           <h2>Milestones</h2>
@@ -71,7 +81,7 @@
                 <label for="comment-input">Comment:</label>
                 <input type="text" id="comment-input">
                 <button id="logButton">Log Progress</button>
-            </div>
+            </div>      
         </section>
     </main>
     <script type="module" src="scripts/scripts.js" defer></script>
