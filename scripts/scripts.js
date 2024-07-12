@@ -17,11 +17,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-const progressData = {
-  relags: 25,
-  dreamer: 26
-};
-
 // Update progress data from Firebase
 function updateProgress() {
   const progressRef = ref(database, '/progress');
