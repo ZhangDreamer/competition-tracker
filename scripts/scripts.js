@@ -67,6 +67,7 @@ function logProgress() {
 
       set(progressRef, currentProgress) // Write back the updated progress to Firebase
         .then(() => {
+          document.getElementById('history-log').innerHTML = '';
           addHistoryLog(participant, progressInput, commentInput); // Log the change after successful update
         })
         .catch((error) => {
@@ -85,7 +86,9 @@ function logProgress() {
 document.addEventListener('DOMContentLoaded', () => {
   const logButton = document.getElementById('logButton'); // Ensure your button has an id="logButton"
   if (logButton) {
-    logButton.addEventListener('click', logProgress);
+    logButton.addEventListener('click', () => {
+      logProgress();
+    });
   }
 });
 
@@ -118,16 +121,20 @@ function addHistoryLog(participant, progress, comment) {
 
 // Fetch history from Firebase
 function fetchHistory() {
+  const historyLog = document.getElementById('history-log');
+  historyLog.innerHTML = ''; // Clear previous logs before fetching and displaying new ones
+
   const historyRef = ref(database, '/history');
   onValue(historyRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        const data = childSnapshot.val();
-        const logEntry = document.createElement('p');
-        logEntry.textContent = `${data.participant.charAt(0).toUpperCase() + data.participant.slice(1)} logged progress: ${data.progress}% - ${data.comment}`;
-        document.getElementById('history-log').appendChild(logEntry);
-      });
+    snapshot.forEach((childSnapshot) => {
+      const data = childSnapshot.val();
+      const logEntry = document.createElement('p');
+      logEntry.textContent = `${data.participant.charAt(0).toUpperCase() + data.participant.slice(1)} logged progress: ${data.progress}% - ${data.comment}`;
+      historyLog.appendChild(logEntry);
+    });
   });
 }
+
 
 // Adding and displaying milestones
 function addMilestone() {
