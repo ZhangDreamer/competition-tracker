@@ -25,20 +25,21 @@ function updateProgress() {
 function logProgress() {
   const participant = document.getElementById('participant').value;
   const progressInput = document.getElementById('progress-input').value;
+  const commentInput = document.getElementById('comment-input').value;
 
   if (progressInput >= 0 && progressInput <= 100) {
       progressData[participant] = progressInput;
       updateProgress();
-      addHistoryLog(participant, progressInput);
+      addHistoryLog(participant, progressInput, commentInput);
   } else {
       alert('Please enter a valid progress percentage between 0 and 100.');
   }
 }
 
-function addHistoryLog(participant, progress) {
+function addHistoryLog(participant, progress, comment) {
   const historyLog = document.getElementById('history-log');
   const logEntry = document.createElement('p');
-  logEntry.textContent = `${participant.charAt(0).toUpperCase() + participant.slice(1)} logged progress: ${progress}%`;
+  logEntry.textContent = `${participant.charAt(0).toUpperCase() + participant.slice(1)} logged progress: ${progress}% - ${comment}`;
   historyLog.appendChild(logEntry);
 }
 
