@@ -76,6 +76,48 @@ function fetchHistory() {
   });
 }
 
-// Initial update
-updateProgress();
-fetchHistory();
+// Adding and displaying milestones
+function addMilestone() {
+  const milestoneInput = document.getElementById('milestone-input').value;
+  const milestoneRef = database.ref('/milestones').push();
+  milestoneRef.set({description: milestoneInput});
+  document.getElementById('milestone-input').value = ''; // Clear input
+}
+
+function displayMilestones() {
+  const milestonesList = document.getElementById('milestone-list');
+  database.ref('/milestones').on('child_added', (snapshot) => {
+      const data = snapshot.val();
+      const milestoneEntry = document.createElement('li');
+      milestoneEntry.textContent = data.description;
+      milestonesList.appendChild(milestoneEntry);
+  });
+}
+
+// Updating and displaying the leaderboard
+function updateLeaderboard() {
+  const leaderboardList = document.getElementById('leaderboard-list');
+  database.ref('/progress').on('value', (snapshot) => {
+      const data = snapshot.val();
+      leaderboardList.innerHTML = `
+          <tr>
+              <th>Participant</th>
+              <th>Progress (%)</th>
+          </tr>`; // Reset leaderboard HTML
+      Object.keys(data).forEach(participant => {
+          const row = document.createElement('tr');
+          row.innerHTML = `<td>${participant.charAt(0).toUpperCase() + participant.slice(1)}</td><td>${data[participant]}%</td>`;
+          leaderboardList.appendChild(row);
+      });
+  });
+}
+
+// Initialization functions
+function initialize() {
+  updateProgress();
+  fetchHistory();
+  displayMilestones();
+  updateLeaderboard();
+}
+
+initialize();
