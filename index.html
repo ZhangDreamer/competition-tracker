@@ -17,8 +17,19 @@
         </section>
         <section id="progress">
             <h2>Current Progress</h2>
-            <div id="tracker">
-                <!-- Progress tracking visualization will go here -->
+            <div class="tracker" id="relags">
+                <h3>Relags</h3>
+                <div class="progress-bar">
+                    <div class="progress" id="relags-progress"></div>
+                </div>
+                <p id="relags-percentage">0%</p>
+            </div>
+            <div class="tracker" id="dreamer">
+                <h3>Dreamer</h3>
+                <div class="progress-bar">
+                    <div class="progress" id="dreamer-progress"></div>
+                </div>
+                <p id="dreamer-percentage">0%</p>
             </div>
         </section>
         <section id="milestones">
@@ -37,6 +48,19 @@
             <h2>History Log</h2>
             <div id="history-log">
                 <!-- History of updates will be listed here -->
+            </div>
+        </section>
+        <section id="log-progress">
+            <h2>Log Progress</h2>
+            <div class="log-form">
+                <label for="participant">Participant:</label>
+                <select id="participant">
+                    <option value="relags">Relags</option>
+                    <option value="dreamer">Dreamer</option>
+                </select>
+                <label for="progress-input">Progress (%):</label>
+                <input type="number" id="progress-input" min="0" max="100">
+                <button onclick="logProgress()">Log Progress</button>
             </div>
         </section>
     </main>
