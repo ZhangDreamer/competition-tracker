@@ -114,10 +114,6 @@ function addHistoryLog(participant, progress, comment) {
       timestamp: Date.now()
   });
 
-  const historyLog = document.getElementById('history-log');
-  const logEntry = document.createElement('p');
-  logEntry.textContent = `${participant.charAt(0).toUpperCase() + participant.slice(1)} logged progress: ${progress}% - ${comment}`;
-  historyLog.appendChild(logEntry);
 }
 
 // Fetch history from Firebase
