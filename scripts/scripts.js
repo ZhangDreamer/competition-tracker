@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+import { getDatabase, ref, set, onValue, push, get } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -60,15 +60,26 @@ function logProgress() {
   const commentInput = document.getElementById('comment-input').value;
 
   if (progressInput >= 0 && progressInput <= 100) {
-    progressData[participant] = parseInt(progressInput);  // Update progressData with new input
-    // Assuming 'database' is correctly initialized and available
     const progressRef = ref(database, '/progress');
-    set(progressRef, progressData);  // Update Firebase database
-    addHistoryLog(participant, progressInput, commentInput);  // Log the change
+    get(progressRef).then((snapshot) => {
+      const currentProgress = snapshot.val() || {}; // Use existing data or an empty object if none exists
+      currentProgress[participant] = parseInt(progressInput); // Update the specific participant's progress
+
+      set(progressRef, currentProgress) // Write back the updated progress to Firebase
+        .then(() => {
+          addHistoryLog(participant, progressInput, commentInput); // Log the change after successful update
+        })
+        .catch((error) => {
+          console.error('Failed to update progress:', error);
+        });
+    }).catch((error) => {
+      console.error('Failed to fetch current progress:', error);
+    });
   } else {
     alert('Please enter a valid progress percentage between 0 and 100.');
   }
 }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
