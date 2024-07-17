@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
 import { getDatabase, ref, set, onValue, push, get } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -55,9 +56,12 @@ function updateProgress() {
 
 // Log progress to Firebase
 function logProgress() {
+  const today = dayjs();
+  const dateString = today.format(' -MMM M, H:mm');
+
   const participant = document.getElementById('participant').value;
   const progressInput = document.getElementById('progress-input').value;
-  const commentInput = document.getElementById('comment-input').value;
+  const commentInput = (document.getElementById('comment-input').value) + dateString;
 
   if (progressInput >= 0 && progressInput <= 100) {
     const progressRef = ref(database, '/progress');
