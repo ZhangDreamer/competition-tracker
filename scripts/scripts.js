@@ -18,6 +18,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+const today = dayjs();
+
 const progressData = {
   relags: 0,
   dreamer: 0
