@@ -57,7 +57,7 @@ function updateProgress() {
 // Log progress to Firebase
 function logProgress() {
   const today = dayjs();
-  const dateString = today.format(' -MMM M, H:mm');
+  const dateString = today.format(' -MMM D, H:mm');
 
   const participant = document.getElementById('participant').value;
   const progressInput = document.getElementById('progress-input').value;
