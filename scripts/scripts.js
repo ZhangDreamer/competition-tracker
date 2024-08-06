@@ -124,20 +124,55 @@ function addHistoryLog(participant, progress, comment) {
 }
 
 // Fetch history from Firebase
-function fetchHistory() {
-  const historyLog = document.getElementById('history-log');
-  historyLog.innerHTML = ''; // Clear previous logs before fetching and displaying new ones
+let currentLogs = [];
+let currentIndex = 0;
 
+function fetchHistory() {
   const historyRef = ref(database, '/history');
   onValue(historyRef, (snapshot) => {
+    currentLogs = []; // Reset current logs array
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
-      const logEntry = document.createElement('p');
-      logEntry.textContent = `${data.participant.charAt(0).toUpperCase() + data.participant.slice(1)} logged progress: ${data.progress}% - ${data.comment}`;
-      historyLog.appendChild(logEntry);
+      currentLogs.push(data);
     });
+    displayLogs(0); // Display the first page of logs
   });
 }
+
+function displayLogs(startIndex) {
+  const historyLog = document.getElementById('history-log');
+  historyLog.innerHTML = ''; // Clear previous logs
+  currentIndex = startIndex;
+
+  // Get a subset of logs to display, maintaining order from oldest to newest
+  const endIndex = startIndex + 5;
+  for (let i = startIndex; i < endIndex && i < currentLogs.length; i++) {
+    const data = currentLogs[i];
+    const logEntry = document.createElement('p');
+    logEntry.textContent = `${data.participant.charAt(0).toUpperCase() + data.participant.slice(1)} logged progress: ${data.progress}% - ${data.comment}`;
+    historyLog.appendChild(logEntry);
+  }
+}
+
+document.getElementById('next-history').addEventListener('click', () => {
+  if (currentIndex + 5 < currentLogs.length) {
+    displayLogs(currentIndex + 5);
+  }
+});
+
+document.getElementById('prev-history').addEventListener('click', () => {
+  if (currentIndex - 5 >= 0) {
+    displayLogs(currentIndex - 5);
+  }
+});
+
+document.getElementById('last-history').addEventListener('click', () => {
+  if (currentLogs.length > 0) {
+    let lastPageIndex = Math.floor((currentLogs.length - 1) / 5) * 5;
+    displayLogs(lastPageIndex);
+  }
+});
+
 
 
 // Adding and displaying milestones
